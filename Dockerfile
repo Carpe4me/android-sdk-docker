@@ -82,7 +82,7 @@ USER ${user}
 
 # ============================================================================ #
 # Gradle configuration
-ENV GRADLE_VERSION=4.5.1
+ENV GRADLE_VERSION=5.6.4
 ENV GRADLE_HOME=$TOOL_DIR/gradle/gradle-$GRADLE_VERSION \
     GRADLE_USER_HOME=${BUILD_CFG}/gradle
 ENV PATH=${PATH}:${GRADLE_HOME}/bin
@@ -98,7 +98,7 @@ RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-b
 
 # ====================================================================== #
 # Kotlin compiler configuration
-ENV KOTLIN_VERSION=1.2.50 \
+ENV KOTLIN_VERSION=1.3.40 \
     KOTLIN_HOME=$TOOL_DIR/kotlinc
 ENV PATH=${PATH}:${KOTLIN_HOME}/bin
 
@@ -109,15 +109,15 @@ RUN wget -q https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERS
 
 # ======================================================================== #
 # Install Android SDK
-ENV ANDROID_SDK_VERSION=4333796 \
+ENV ANDROID_SDK_VERSION=6200805_latest \
     ANDROID_HOME=$TOOL_DIR/android-sdk
 ENV PATH=${PATH}:${ANDROID_HOME}/emulator:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin
 
-RUN wget -q https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_VERSION}.zip && \
+RUN wget -q https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}.zip && \
     mkdir -p $ANDROID_HOME &&\
-    unzip -qq *tools*linux*.zip -d $ANDROID_HOME && \
+    unzip -qq *commandlinetools*linux*.zip -d $ANDROID_HOME && \
     chmod -R a+w ${ANDROID_HOME} && \
-    rm *tools*linux*.zip
+    rm *commandlinetools*linux*.zip
 
 # setup adb server
 EXPOSE 5037
@@ -127,7 +127,7 @@ EXPOSE 5037
 # Update Android SDKManager
 RUN mkdir ~/.android && \
     echo '### User Sources for Android SDK Manager' > ~/.android/repositories.cfg && \
-    sdkmanager --update && yes | sdkmanager --licenses
+    sdkmanager --update --sdk_root=${ANDROID_HOME}  && yes | sdkmanager --licenses --sdk_root=${ANDROID_HOME}
 
 # Update SDK manager and install system image, platform and build tools
 RUN sdkmanager \
@@ -137,12 +137,10 @@ RUN sdkmanager \
   "extras;android;m2repository" \
   "extras;google;m2repository" \
   "extras;google;google_play_services" \
-  "build-tools;26.0.1" \
-  "build-tools;27.0.3" \
-  "build-tools;28.0.0" \
   "build-tools;28.0.3" \
-  "sources;android-28" \
-  "platforms;android-28"
+  "build-tools;29.0.2" \
+  "build-tools;29.0.3" \
+  --sdk_root=${ANDROID_HOME}
 # ---------------------------------------------------------------------------- #
 # ============================================================================ #
 # Set the environment variables

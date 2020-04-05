@@ -1,0 +1,16 @@
+[push]
+        default = simple
+[diff]
+        tool = bc3
+[difftool "bc3"]
+        path = /usr/bin/bcompare
+[difftool]
+        prompt = false
+[mergetool]
+        prompt = false
+[merge]
+        tool = bc3
+[mergetool "bc3"]
+        path = /usr/bin/bcompare
+[color]
+        ui = auto

@@ -1,4 +1,4 @@
-DOCKERIMG:=carpe4me/android-sdk:28.0.0
+DOCKERIMG:=carpe4me/android-sdk:29.0.4
 DOCKERIMG_LATEST:=carpe4me/android-sdk
 CONTAINER:=android-sdk
 HOSTNAME:=docker
@@ -41,3 +41,10 @@ remove_container_all:
 	@docker rm $(docker ps -a -q)
 clean-none-images:
 	@docker rmi $(docker images -f "dangling=true" -q)
+
+# Docker Container 삭제
+# $> docker stop $(docker ps -a -q)
+# $> docker rm $(docker ps -a -q)
+
+# Docker Image 삭제
+# docker rmi $(docker images -q)
