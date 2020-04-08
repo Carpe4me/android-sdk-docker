@@ -1,4 +1,4 @@
-DOCKERIMG:=carpe4me/android-sdk:29.0.4
+DOCKERIMG:=carpe4me/android-sdk:29.0.3
 DOCKERIMG_LATEST:=carpe4me/android-sdk
 CONTAINER:=android-sdk
 HOSTNAME:=docker

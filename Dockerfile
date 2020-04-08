@@ -82,7 +82,7 @@ USER ${user}
 
 # ============================================================================ #
 # Gradle configuration
-ENV GRADLE_VERSION=5.6.4
+ENV GRADLE_VERSION=5.4.1
 ENV GRADLE_HOME=$TOOL_DIR/gradle/gradle-$GRADLE_VERSION \
     GRADLE_USER_HOME=${BUILD_CFG}/gradle
 ENV PATH=${PATH}:${GRADLE_HOME}/bin
@@ -130,6 +130,8 @@ RUN mkdir ~/.android && \
     sdkmanager --update --sdk_root=${ANDROID_HOME}  && yes | sdkmanager --licenses --sdk_root=${ANDROID_HOME}
 
 # Update SDK manager and install system image, platform and build tools
+# https://developer.android.com/studio/releases/build-tools
+# Latest: Android SDK 29.0.3 : 2020.01
 RUN sdkmanager \
   "tools" \
   "platform-tools" \
@@ -140,6 +142,8 @@ RUN sdkmanager \
   "build-tools;28.0.3" \
   "build-tools;29.0.2" \
   "build-tools;29.0.3" \
+  "sources;android-29" \
+  "platforms;android-29" \
   --sdk_root=${ANDROID_HOME}
 # ---------------------------------------------------------------------------- #
 # ============================================================================ #
