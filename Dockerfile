@@ -39,6 +39,7 @@ RUN dpkg --add-architecture i386 \
         locales language-pack-ko fonts-nanum fonts-nanum-coding \
         uim im-config \
         gdebi-core \
+        net-tools \
     && apt-get -y autoremove \
     && apt-get clean \
     && apt-get -y autoclean
