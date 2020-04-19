@@ -27,7 +27,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 #                             (https://developer.android.com/studio/install)
 # install Java
 # install essential tools
-# install Qt
 # Clean up
 RUN dpkg --add-architecture i386 \
     && apt-get update -y \
@@ -35,29 +34,10 @@ RUN dpkg --add-architecture i386 \
         libncurses5:i386 libc6:i386 libstdc++6:i386 zlib1g:i386 lib32z1 lib32ncurses5 lib32stdc++6 lib32gcc1 \
         git wget zip unzip vim sudo curl gnupg2 openssh-server \
         openjdk-8-jdk \
-        qt5-default \
-        locales language-pack-ko fonts-nanum fonts-nanum-coding \
-        uim im-config \
-        gdebi-core \
         net-tools \
     && apt-get -y autoremove \
     && apt-get clean \
     && apt-get -y autoclean
-# ---------------------------------------------------------------------------- #
-
-# ============================================================================ #
-# 개발자 Font 추가
-# [D2Coding] https://github.com/naver/d2codingfont/releases
-# [Bitstream Vera Sans Mono] http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/
-RUN wget -q https://github.com/naver/d2codingfont/releases/download/VER1.3.2/D2Coding-Ver1.3.2-20180524.zip && \
-    mkdir -p /usr/share/fonts/truetype/D2Coding && \
-    unzip -qq D2Coding-*.zip -d /usr/share/fonts/truetype/D2Coding && \
-    wget -q http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/1.10/ttf-bitstream-vera-1.10.zip &&\
-    mkdir -p /usr/share/fonts/truetype/ttf-bitstream-vera && \
-    unzip -qq ttf-bitstream-vera*.zip -d /usr/share/fonts/truetype/ttf-bitstream-vera &&\
-    fc-cache -f -v &&\
-    rm -f /tmp/D2Coding-Ver*.zip &&\
-    rm -f /tmp/ttf-bitstream-vera-*.zip
 # ---------------------------------------------------------------------------- #
 
 # ============================================================================ #
@@ -141,9 +121,7 @@ RUN sdkmanager \
   "extras;google;m2repository" \
   "extras;google;google_play_services" \
   "build-tools;28.0.3" \
-  "build-tools;29.0.2" \
   "build-tools;29.0.3" \
-  "sources;android-29" \
   "platforms;android-29" \
   --sdk_root=${ANDROID_HOME}
 # ---------------------------------------------------------------------------- #
@@ -151,13 +129,6 @@ RUN sdkmanager \
 # Set the environment variables
 ENV JAVA_HOME "/usr/lib/jvm/java-8-openjdk-amd64"
 #COPY --chown=1000:1000 .bashrc $HOME_DIR
-
-# ============================================================================ #
-# Install Beyond Compare 4
-# https://www.scootersoftware.com/download.php?zz=kb_linux_install
-# RUN wget -q https://www.scootersoftware.com/bcompare-4.2.8.23479_amd64.deb -O bcompare.deb && \
-#    sudo gdebi --non-interactive bcompare.deb &&\
-#    rm bcompare.deb
 
 # ---------------------------------------------------------------------------- #
 # Git Configuration
